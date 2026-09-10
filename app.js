@@ -584,6 +584,117 @@ function fillSelects() {
   ENGAGEMENT.forEach(e => $("f-engagement")?.add(new Option(label(e), e)));
 }
 
+// ================= FAST QUEUE & QR STANDEE =================
+let queueNowServing = { num: "A-101", name: "Farah binti Yusof" };
+let queueNextPatient = { num: "A-102", name: "Tan Wei Lun" };
+
+async function quickAddQueue() {
+  const name = $("fq-name").value.trim();
+  const phone = $("fq-phone").value.trim();
+  const treatment = $("fq-treatment").value;
+
+  if (!name || !phone) {
+    toast("⚠ Sila masukkan nama dan nombor telefon pesakit.");
+    return;
+  }
+
+  const payload = {
+    name,
+    phone,
+    treatment,
+    program_interest: treatment,
+    source: "walkin",
+    stage: "appointment",
+    allergies: "Tiada",
+    panel: "Sendiri"
+  };
+
+  try {
+    const r = await api("/api/leads", { method: "POST", body: JSON.stringify(payload) });
+    const qNum = "A-" + (100 + (r.id % 900));
+    toast(`⚡ ${name} didaftarkan! No. Giliran: ${qNum}. WhatsApp dihantar.`);
+    $("fq-name").value = "";
+    $("fq-phone").value = "";
+    queueNextPatient = { num: qNum, name };
+    updateQueueDisplay();
+    loadOverview();
+  } catch (e) { fail(e); }
+}
+
+function updateQueueDisplay() {
+  if ($("qcb-now-serving")) $("qcb-now-serving").textContent = `${queueNowServing.num} (${queueNowServing.name})`;
+  if ($("qcb-next-patient")) $("qcb-next-patient").textContent = `${queueNextPatient.num} (${queueNextPatient.name})`;
+}
+
+function callNextPatient() {
+  queueNowServing = { ...queueNextPatient };
+  const nextNum = "A-" + (parseInt(queueNowServing.num.split("-")[1]) + 1);
+  queueNextPatient = { num: nextNum, name: "Pesakit Giliran Seterusnya" };
+  updateQueueDisplay();
+  toast(`🔔 Giliran ${queueNowServing.num} (${queueNowServing.name}) dipanggil! Auto-WhatsApp alert dihantar.`);
+}
+
+function skipCurrentPatient() {
+  toast(`⏸ ${queueNowServing.name} di-hold. Pesakit seterusnya dipanggil.`);
+  callNextPatient();
+}
+
+function openQrStandeeModal() {
+  $("standee-backdrop")?.classList.remove(HIDDEN);
+  $("standee-modal")?.classList.remove(HIDDEN);
+  renderStandeeQr();
+}
+
+function closeQrStandeeModal() {
+  $("standee-backdrop")?.classList.add(HIDDEN);
+  $("standee-modal")?.classList.add(HIDDEN);
+}
+
+function renderStandeeQr() {
+  const box = $("standee-qr-render");
+  if (!box) return;
+  // Generate high-res fake QR SVG
+  box.innerHTML = `<svg viewBox="0 0 100 100" width="140" height="140" fill="var(--teal)">
+    <rect x="5" y="5" width="25" height="25" fill="none" stroke="var(--teal)" stroke-width="6"/>
+    <rect x="11" y="11" width="13" height="13"/>
+    <rect x="70" y="5" width="25" height="25" fill="none" stroke="var(--teal)" stroke-width="6"/>
+    <rect x="76" y="11" width="13" height="13"/>
+    <rect x="5" y="70" width="25" height="25" fill="none" stroke="var(--teal)" stroke-width="6"/>
+    <rect x="11" y="76" width="13" height="13"/>
+    <rect x="38" y="10" width="6" height="20"/>
+    <rect x="48" y="10" width="12" height="6"/>
+    <rect x="38" y="40" width="24" height="24"/>
+    <rect x="10" y="38" width="20" height="6"/>
+    <rect x="70" y="38" width="20" height="14"/>
+    <rect x="38" y="72" width="12" height="18"/>
+    <rect x="58" y="72" width="32" height="6"/>
+    <rect x="70" y="84" width="20" height="10"/>
+  </svg>`;
+}
+
+function simulatePatientScan() {
+  closeQrStandeeModal();
+  toast("📲 Simulasi: Pesakit scan QR kaunter → Alisya balas auto-tiket giliran!");
+  const pName = "En. Haziq (Scan QR)";
+  const qNum = "A-" + (between(110, 199));
+  api("/api/leads", {
+    method: "POST",
+    body: JSON.stringify({
+      name: pName,
+      phone: "019-8877665",
+      treatment: "Demam & Sakit Tekak (Self Check-In)",
+      source: "whatsapp",
+      stage: "appointment",
+      allergies: "Tiada",
+      panel: "Sendiri"
+    })
+  }).then(() => {
+    queueNextPatient = { num: qNum, name: pName };
+    updateQueueDisplay();
+    loadOverview();
+  });
+}
+
 function startApp() {
   fillSelects();
   const h = location.hash.slice(1);

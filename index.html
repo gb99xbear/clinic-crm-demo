@@ -100,16 +100,54 @@
       <header class="page-head">
         <div>
           <span class="eyebrow">Overview</span>
-          <h1>Pipeline pesakit</h1>
+          <h1>Pipeline &amp; Giliran Pesakit</h1>
         </div>
         <div class="page-actions">
+          <button class="btn secondary" onclick="openQrStandeeModal()">📲 Standee QR Kaunter</button>
           <div class="segmented dashboard-window-buttons">
-            <button data-days="all" class="current" onclick="setDashboardWindow(null)">All time</button>
-            <button data-days="7" onclick="setDashboardWindow(7)">7 days</button>
-            <button data-days="30" onclick="setDashboardWindow(30)">30 days</button>
+            <button data-days="all" class="current" onclick="setDashboardWindow(null)">Semua</button>
+            <button data-days="7" onclick="setDashboardWindow(7)">7 Hari</button>
+            <button data-days="30" onclick="setDashboardWindow(30)">30 Hari</button>
           </div>
         </div>
       </header>
+
+      <!-- FAST QUEUE ENTRY BAR (10 SAAT) -->
+      <div class="card fast-queue-bar">
+        <div class="fq-title">
+          <span class="pulse-dot"></span>
+          <b>Pendaftaran Pantas Kaunter (10 Saat)</b>
+          <span class="hint">Pesakit walk-in terus masuk senarai giliran &amp; aktifkan auto-WhatsApp</span>
+        </div>
+        <div class="fq-inputs">
+          <input id="fq-name" placeholder="Nama Pesakit (cth: En. Azman)" />
+          <input id="fq-phone" placeholder="No. Telefon (012-3456789)" />
+          <select id="fq-treatment">
+            <option value="Demam & Selesema">Demam &amp; Selesema (GP)</option>
+            <option value="Sakit Perut / Gastrik">Sakit Perut / Gastrik (GP)</option>
+            <option value="Pemeriksaan Kesihatan">Pemeriksaan Kesihatan (GP)</option>
+            <option value="Dental Scaling / Sakit Gigi">Pemeriksaan Gigi / Scaling</option>
+            <option value="Lain-lain">Lain-lain</option>
+          </select>
+          <button class="btn primary" onclick="quickAddQueue()">⚡ Masuk Giliran &amp; WhatsApp</button>
+        </div>
+      </div>
+
+      <!-- LIVE QUEUE CALL CONTROLLER -->
+      <div class="card queue-call-bar">
+        <div class="qcb-current">
+          <span class="hint">Sedang Dirawat:</span>
+          <b id="qcb-now-serving" style="color:var(--teal)">A-101 (Farah binti Yusof)</b>
+        </div>
+        <div class="qcb-next">
+          <span class="hint">Pesakit Seterusnya:</span>
+          <b id="qcb-next-patient">A-102 (Tan Wei Lun)</b>
+        </div>
+        <div class="qcb-actions">
+          <button class="btn primary" onclick="callNextPatient()">🔔 Panggil Seterusnya (WhatsApp Alert)</button>
+          <button class="btn ghost small" onclick="skipCurrentPatient()">⏸ Hold / Skip</button>
+        </div>
+      </div>
 
       <div id="stat-cards" class="stat-grid"></div>
 
@@ -643,6 +681,33 @@
   </main>
 </div>
 
+<!-- ============ QR STANDEE MODAL ============ -->
+<div id="standee-backdrop" class="backdrop hidden" onclick="closeQrStandeeModal()"></div>
+<div id="standee-modal" class="modal-card hidden" role="dialog" aria-modal="true">
+  <div class="modal-head">
+    <h3>📲 Standee QR Kaunter (Self Check-In Pesakit)</h3>
+    <button class="btn ghost small" onclick="closeQrStandeeModal()">✕</button>
+  </div>
+  <div class="standee-body">
+    <div class="standee-print-card">
+      <div class="standee-brand"><span class="brand-mark">KC</span><b>Poliklinik Famili</b></div>
+      <h2>Imbas Untuk Ambil Giliran WhatsApp</h2>
+      <p>Tak perlu beratur atau menunggu di dalam klinik. Imbas kod QR ini untuk terus dapatkan nombor giliran dalam telefon anda.</p>
+      <div class="standee-qr-box" id="standee-qr-render">
+        <!-- Generated SVG QR -->
+      </div>
+      <div class="standee-perks">
+        <span>🚗 Boleh tunggu dalam kereta / kafe</span>
+        <span>🔔 Alisya auto-WhatsApp bila giliran hampir tiba</span>
+      </div>
+    </div>
+    <div class="standee-actions">
+      <button class="btn primary block" onclick="simulatePatientScan()">⚡ Simulasi: Pesakit Imbas QR Ini</button>
+      <button class="btn ghost block" onclick="window.print()">🖨 Cetak Standee Meja Kaunter</button>
+    </div>
+  </div>
+</div>
+
 <!-- ============ DRAWER ============ -->
 <div id="drawer-backdrop" class="backdrop hidden" onclick="closeDrawer()"></div>
 <aside id="drawer" class="drawer hidden" role="dialog" aria-modal="true">
@@ -651,7 +716,8 @@
 
 <div id="toast" class="toast"></div>
 
-<script src="mock.js?v=20260910d"></script>
-<script src="app.js?v=20260910d"></script>
+<script src="mock.js?v=20260910e"></script>
+<script src="app.js?v=20260910e"></script>
+<link rel="stylesheet" href="styles.css?v=20260910e">
 </body>
 </html>
