@@ -595,7 +595,10 @@ function startApp() {
 async function init() {
   try {
     await api("/api/health");
-    $("login").classList.add(HIDDEN); $("app").classList.remove(HIDDEN); startApp();
+    $("login").classList.add(HIDDEN); $("app").classList.remove(HIDDEN);
+    const tb = document.getElementById('mobile-topbar');
+    if (tb) tb.classList.remove(HIDDEN);
+    startApp();
   } catch { showLogin(); }
 }
 init();
