@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..700,50&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=20260910b">
+<link rel="stylesheet" href="styles.css?v=20260910c">
 </head>
 <body>
 
@@ -514,67 +514,71 @@
     <!-- ===== PRICING ===== -->
     <section id="tab-pricing" class="tabpanel hidden">
       <header class="page-head">
-        <div><span class="eyebrow">Packages</span><h1>Packages for clinics</h1><p class="hint">For GP & Dental — same system, clinic-tuned. Booking, reminder, no-show follow-up.</p></div>
+        <div><span class="eyebrow">Packages</span><h1>Pakej Poliklinik Famili</h1><p class="hint">Sistem khas 1 cawangan klinik GP/Famili — Booking, Reminder, H+3 Recovery &amp; Google 5-Star Reviews.</p></div>
       </header>
       <div class="pricing-grid">
         <div class="price-card">
-          <span class="price-kicker">Starter</span>
-          <div class="price-head"><b>RM599</b><span>setup</span><b class="sub">+ RM99/mo</b></div>
-          <p class="hint">GP / Dental · 1 klinik · 1–2 numbers · 1 staff</p>
+          <span class="price-kicker">Basic GP</span>
+          <div class="price-head"><b>RM499</b><span>setup</span><b class="sub">+ RM89/mo</b></div>
+          <p class="hint">1 Klinik · 1 WhatsApp (Kaunter) · Solo Doctor</p>
           <ul>
-            <li>Patients, pipeline 5 stages, kanban 8/page, inbox, dashboard, follow-up queue</li>
-            <li>Alisya WA auto-reply · 20-exchange memory · anti-repeat</li>
-            <li><b>2 devices max</b> · 200 patients/mo (walk-in + WA)</li>
-            <li>Subdomain <span class="mono">klinikanda.care</span> · weekly backup</li>
-            <li>WA support · 48h fix</li>
+            <li>Patient Pipeline 5 peringkat (New → Qualified → Appt → Treated → Lost)</li>
+            <li>Alisya AI WhatsApp Auto-Reply &amp; Booking 24/7</li>
+            <li>Google 5-Star Review Booster lepas rawatan</li>
+            <li>1 WhatsApp Device (Kaunter) · Unlimited pesakit</li>
+            <li>Subdomain <span class="mono">klinikanda.care</span> · Hosting &amp; Backup</li>
+            <li>WA Support · 48 jam fix</li>
           </ul>
-          <button class="btn primary block" onclick="contactPricing('Starter')">Choose Starter</button>
+          <button class="btn primary block" onclick="contactPricing('Basic GP')">Pilih Basic GP</button>
         </div>
         <div class="price-card featured">
-          <span class="price-badge">Most chosen</span>
-          <span class="price-kicker">Pro</span>
-          <div class="price-head"><b>RM999</b><span>setup</span><b class="sub">+ RM199/mo</b></div>
-          <p class="hint">2–3 cawangan · 3–5 numbers · 3 staff</p>
+          <span class="price-badge">Paling Lengkap</span>
+          <span class="price-kicker">Full Suite GP</span>
+          <div class="price-head"><b>RM799</b><span>setup</span><b class="sub">+ RM149/mo</b></div>
+          <p class="hint">1 Klinik · 2–3 WhatsApp (Kaunter + Doktor/Admin) · Active Polyclinic</p>
           <ul>
-            <li>Everything in Starter + priority views</li>
-            <li><b>5 devices max</b> · 500 patients/mo</li>
-            <li>Custom <span class="mono">crm.klinikanda.care</span> · daily backup</li>
-            <li>WA support · 24h priority</li>
+            <li><b>Semua dalam Basic GP +</b></li>
+            <li><b>Automated Reminder:</b> H-1 &amp; H-2 jam kurangkan no-show</li>
+            <li><b>H+3 Recovery Recall:</b> Auto follow-up pesakit demam/rawatan</li>
+            <li><b>2–3 WhatsApp Devices:</b> Kaunter &amp; Doktor asing tapi 1 sistem</li>
+            <li>Custom Domain <span class="mono">crm.klinikanda.com</span></li>
+            <li>Priority WA Support (Response pantas)</li>
           </ul>
-          <button class="btn primary block" onclick="contactPricing('Pro')">Choose Pro</button>
+          <button class="btn primary block" onclick="contactPricing('Full Suite GP')">Pilih Full Suite GP</button>
         </div>
         <div class="price-card">
-          <span class="price-kicker">Self-Host</span>
-          <div class="price-head"><b>RM2,500</b><span>one-time</span><b class="sub">+ RM0/mo</b></div>
-          <p class="hint">Your VPS · your domain · you host</p>
+          <span class="price-kicker">Add-on Branch</span>
+          <div class="price-head"><b>RM599</b><span>setup</span><b class="sub">+ RM99/mo</b></div>
+          <p class="hint">Cawangan Ke-2 &amp; Seterusnya (Isolated Instance)</p>
           <ul>
-            <li>Source code + training 2h</li>
-            <li>5 devices (configurable) · unlimited patients</li>
-            <li>30-day onboarding only · you manage updates</li>
+            <li>Instance &amp; Database berasingan (100% patuh privasi pesakit)</li>
+            <li>Subdomain / Custom Domain cawangan baharu</li>
+            <li>Diskaun setup 25% untuk cawangan tambahan</li>
+            <li>Data pesakit &amp; WhatsApp tidak bercampur</li>
           </ul>
-          <button class="btn ghost block" onclick="contactPricing('Self-Host')">Get source</button>
+          <button class="btn ghost block" onclick="contactPricing('Add-on Branch')">Tambah Cawangan</button>
         </div>
       </div>
       <div class="pricing-faq card">
-        <div class="pricing-faq-head"><h3>Frequently asked</h3></div>
+        <div class="pricing-faq-head"><h3>Soalan Lazim (FAQ)</h3></div>
         <div class="faq-item">
-          <h4>Why one-time + monthly?</h4>
-          <p class="hint">Setup covers data migration, training (2h), and system configuration. Monthly covers hosting, security patches, updates, and support — so your clinic always runs the latest version. Without a monthly, we'd have to charge RM2,000+ upfront and leave you alone afterwards.</p>
+          <h4>Kenapa bayaran setup sekali + langganan bulanan?</h4>
+          <p class="hint">Setup merangkumi konfigurasi sistem, latihan staff (2 jam), dan template mesej klinik. Bulanan merangkumi kos hosting server laju, kemaskini keselamatan, backup data pesakit, dan sokongan teknikal terus. Tanpa bulanan, kos asal sistem cecah RM3,000+ sekali bayar.</p>
         </div>
         <div class="faq-item">
-          <h4>What's the device limit?</h4>
-          <p class="hint">Starter supports 2 WhatsApp numbers, Pro supports up to 5. Each number pairs via a simple QR scan. That's enough for front desk + doctor + owner. Need more? We can raise the cap on Pro.</p>
+          <h4>Berapa nombor WhatsApp boleh disambung?</h4>
+          <p class="hint">Pakej Basic menyokong 1 nombor WhatsApp utama (Kaunter). Pakej Full Suite menyokong sehingga 2–3 nombor (cth: Kaunter 1, Kaunter 2 &amp; Doktor) dalam satu cawangan. Penyambungan pantas melalui imbasan QR.</p>
         </div>
         <div class="faq-item">
-          <h4>WhatsApp — official API or not?</h4>
-          <p class="hint">We use WhatsApp Web automation (each number scans a QR, mirroring whatsapp.com) — not the Official WhatsApp Business API. Why: no per-conversation fee and a 10-minute setup. Trade-off: WhatsApp may temporary-block numbers that send spam, so we enforce warm-up limits, smart queues, and anti-duplicate guards. Want the official green-tick later? We can migrate you — extra Meta/BSP fees apply.</p>
+          <h4>WhatsApp guna API rasmi ke?</h4>
+          <p class="hint">Kami menggunakan automasi WhatsApp Web (imbas QR seperti WhatsApp Web biasa). Kelebihannya tiada caj setiap mesej (Official API kenakan RM0.15–RM0.30 setiap perbualan). Sistem kami dilengkapi 'smart human delay' dan kawalan anti-spam untuk mengurangkan risiko sekatan.</p>
         </div>
         <div class="faq-item">
-          <h4>Is Alisya giving medical advice?</h4>
-          <p class="hint">No. Alisya books appointments, sends reminders, and follows up no-shows. She never diagnoses, prescribes, or promises outcomes — clinical questions always go to your doctor.</p>
+          <h4>Adakah Alisya memberi nasihat perubatan?</h4>
+          <p class="hint">Tidak sama sekali. Alisya bertindak sebagai pembantu pentadbiran — menguruskan waktu temujanji, pendaftaran awal, dan peringatan susulan. Sebarang soalan klinikal atau ubat akan terus diserahkan kepada doktor bertugas.</p>
         </div>
         <div class="pricing-cta-row">
-          <button class="btn primary" onclick="showTab('terms')">Read full Terms &amp; disclosure →</button>
+          <button class="btn primary" onclick="showTab('terms')">Baca Terma Penuh &amp; Disclosure →</button>
         </div>
       </div>
     </section>
@@ -646,7 +650,7 @@
 
 <div id="toast" class="toast"></div>
 
-<script src="mock.js?v=20260910a"></script>
-<script src="app.js?v=20260910a"></script>
+<script src="mock.js?v=20260910c"></script>
+<script src="app.js?v=20260910c"></script>
 </body>
 </html>

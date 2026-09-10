@@ -724,8 +724,8 @@ function fillSelects() {
   ENGAGEMENT.forEach(e => $("f-engagement").add(new Option(label(e), e)));
 }
 function contactPricing(plan) {
-  const msg = encodeURIComponent(`Hi Campus Bridge — I'm interested in ${plan} package. Boleh share details & next steps?`);
-  toast(`${plan} — opening WhatsApp…`);
+  const msg = encodeURIComponent(`Salam, saya berminat nak tahu lebih lanjut tentang Pakej ${plan} Klinik CRM.`);
+  toast(`${plan} — membuka WhatsApp…`);
   window.open(`https://wa.me/60174337675?text=${msg}`, '_blank', 'noopener');
 }
 function startApp() {
