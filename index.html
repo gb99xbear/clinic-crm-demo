@@ -66,22 +66,22 @@
     <nav class="nav">
       <button class="tab active" data-tab="overview" onclick="showTab('overview')">
         <i class="ic">▦</i><span>Overview</span></button>
+      <button class="tab" data-tab="calendar" onclick="showTab('calendar')">
+        <i class="ic">📅</i><span>Kalendar</span><em id="nav-cal-count" class="nav-count"></em></button>
       <button class="tab" data-tab="leads" onclick="showTab('leads')">
-        <i class="ic">☺</i><span>Leads</span><em id="nav-leads-count" class="nav-count"></em></button>
+        <i class="ic">☺</i><span>Pesakit</span><em id="nav-leads-count" class="nav-count"></em></button>
       <button class="tab" data-tab="inbox" onclick="showTab('inbox')">
-        <i class="ic">✉</i><span>Inbox</span><em id="nav-inbox-count" class="nav-count wa"></em></button>
-      <button class="tab" data-tab="schools" onclick="showTab('schools')">
-        <i class="ic">⌂</i><span>Referrals</span></button>
-      <div class="nav-sep"><span>Alisya</span></div>
+        <i class="ic">✉</i><span>Inbox WA</span><em id="nav-inbox-count" class="nav-count wa"></em></button>
+      <div class="nav-sep"><span>Klinik AI</span></div>
       <button class="tab" data-tab="devices" onclick="showTab('devices')">
-        <i class="ic">▤</i><span>Devices</span><em id="nav-dev-dot" class="nav-dot"></em></button>
+        <i class="ic">📱</i><span>WhatsApp</span><em id="nav-dev-dot" class="nav-dot"></em></button>
       <button class="tab" data-tab="settings" onclick="showTab('settings')">
-        <i class="ic">⚙</i><span>Settings</span></button>
+        <i class="ic">⚙</i><span>Tetapan</span></button>
       <button class="tab" data-tab="pricing" onclick="showTab('pricing')">
-        <i class="ic">◈</i><span>Pricing</span><em class="nav-count" style="background:var(--saffron);color:#fff">MYR</em></button>
-      <div class="nav-sep"><span>Quick</span></div>
+        <i class="ic">◈</i><span>Pakej GP</span><em class="nav-count" style="background:var(--saffron);color:#fff">MYR</em></button>
+      <div class="nav-sep"><span>Tindakan</span></div>
       <button class="tab" data-tab="add" onclick="showTab('add')">
-        <i class="ic">＋</i><span>Add Lead</span></button>
+        <i class="ic">＋</i><span>Daftar Pesakit</span></button>
     </nav>
 
     <div class="sidebar-foot">
@@ -157,23 +157,26 @@
       </div>
     </section>
 
-    <!-- ===== LEADS ===== -->
+    <!-- ===== LEADS / PESAKIT ===== -->
     <section id="tab-leads" class="tabpanel hidden">
       <header class="page-head">
-        <div><span class="eyebrow">Pesakit</span><h1>Semua pesakit</h1></div>
-        <div class="page-actions"><button class="btn primary" onclick="showTab('add')">＋ Add lead</button></div>
+        <div><span class="eyebrow">Direktori</span><h1>Pendaftaran &amp; Rekod Pesakit</h1></div>
+        <div class="page-actions"><button class="btn primary" onclick="showTab('add')">＋ Daftar Pesakit</button></div>
       </header>
       <div class="toolbar">
         <div class="filters">
-          <input id="f-search" placeholder="Search name, email, phone…" oninput="debounce(loadLeads)()">
+          <input id="f-search" placeholder="Cari nama, No K/P, telefon…" oninput="debounce(loadLeads)()">
           <select id="f-source" onchange="loadLeads()">
-            <option value="">All sources</option>
-            <option value="manual">Manual</option><option value="website">Website</option>
-            <option value="whatsapp">WhatsApp</option><option value="email">Email</option>
+            <option value="">Semua punca</option>
+            <option value="walkin">Walk-in</option>
+            <option value="whatsapp">WhatsApp</option>
+            <option value="website">Website</option>
+            <option value="referral">Rujukan</option>
+            <option value="manual">Manual</option>
           </select>
-          <select id="f-stage" onchange="loadLeads()"><option value="">All stages</option></select>
-          <select id="f-engagement" onchange="loadLeads()"><option value="">All engagement</option></select>
-          <label class="toggle"><input id="f-overdue" type="checkbox" onchange="loadLeads()"><i></i><span>Overdue only</span></label>
+          <select id="f-stage" onchange="loadLeads()"><option value="">Semua status rawatan</option></select>
+          <select id="f-engagement" onchange="loadLeads()"><option value="">Semua respon</option></select>
+          <label class="toggle"><input id="f-overdue" type="checkbox" onchange="loadLeads()"><i></i><span>Perlu Susulan Sahaja</span></label>
         </div>
         <span id="leads-count" class="hint"></span>
       </div>
@@ -181,13 +184,53 @@
         <div class="table-wrap">
           <table id="leads-table" class="data">
             <thead><tr>
-              <th>Name</th><th>Source</th><th>Stage</th><th>Engagement</th>
-              <th>Rawatan</th><th>Next follow-up</th><th>Updated</th>
+              <th>Pesakit &amp; No. Telefon</th>
+              <th>Punca</th>
+              <th>Status Rawatan</th>
+              <th>Respon</th>
+              <th>Aduan / Rawatan</th>
+              <th>Temujanji / Susulan</th>
+              <th>Kemaskini</th>
             </tr></thead>
             <tbody></tbody>
           </table>
         </div>
-        <p id="leads-empty" class="empty hidden">Tiada pesakit yang sepadan.</p>
+        <p id="leads-empty" class="empty hidden">Tiada rekod pesakit ditemui.</p>
+      </div>
+    </section>
+
+    <!-- ===== CALENDAR ===== -->
+    <section id="tab-calendar" class="tabpanel hidden">
+      <header class="page-head">
+        <div><span class="eyebrow">Jadual</span><h1>Kalendar &amp; Slot Temujanji</h1><p class="hint">Pilih tarikh untuk lihat slot doktor, pesakit disahkan, dan status rawatan.</p></div>
+        <div class="page-actions">
+          <select id="cal-doc-filter" onchange="renderCalendar()">
+            <option value="all">Semua Doktor Bertugas</option>
+            <option value="Dr. Amina">Dr. Amina (Pagi · 9am–2pm)</option>
+            <option value="Dr. Farid">Dr. Farid (Petang · 2pm–9pm)</option>
+            <option value="Dr. Sarah">Dr. Sarah (Klinik Gigi)</option>
+          </select>
+          <button class="btn primary" onclick="openNewApptModal()">＋ Tempah Slot</button>
+        </div>
+      </header>
+
+      <div class="cal-layout">
+        <div class="card cal-month-card">
+          <div class="cal-nav-bar">
+            <button class="btn ghost small" onclick="changeCalMonth(-1)">‹</button>
+            <h3 id="cal-month-title">September 2026</h3>
+            <button class="btn ghost small" onclick="changeCalMonth(1)">›</button>
+          </div>
+          <div class="cal-grid" id="cal-month-grid"></div>
+        </div>
+
+        <div class="card cal-day-card">
+          <div class="card-head">
+            <div><span class="hint" id="cal-day-subtitle">Hari ini</span><h3 id="cal-day-title">Jadual Temujanji</h3></div>
+            <span id="cal-day-count" class="badge">0 slot</span>
+          </div>
+          <div id="cal-slot-list" class="cal-slot-list"></div>
+        </div>
       </div>
     </section>
 
@@ -222,95 +265,53 @@
       </div>
     </section>
 
-    <!-- ===== SCHOOLS ===== -->
-    <section id="tab-schools" class="tabpanel hidden">
-      <header class="page-head">
-        <div><span class="eyebrow">Partners</span><h1>Rakan rujukan</h1></div>
-        <div class="page-actions"><button class="btn primary" onclick="toggleSchoolForm()">＋ Add school</button></div>
-      </header>
-      <div class="toolbar">
-        <div class="filters">
-          <input id="s-search" placeholder="Search klinik, city, contact…" oninput="debounce(loadSchools)()">
-          <select id="s-status" onchange="loadSchools()"><option value="">All statuses</option></select>
-          <select id="s-tier" onchange="loadSchools()">
-            <option value="">All tiers</option>
-            <option value="tier1_spk">Tier 1 — SPK/International</option>
-            <option value="tier2_elite">Tier 2 — Elite private</option>
-            <option value="tier3_islamic">Tier 3 — Islamic network</option>
-            <option value="tier4_regional">Tier 4 — Regional</option>
-          </select>
-        </div>
-      </div>
-
-      <div id="school-form" class="card form-card hidden">
-        <div class="card-head"><h3>Add referral partner</h3><button class="btn ghost small" onclick="toggleSchoolForm()">✕</button></div>
-        <div class="form-grid">
-          <label class="field span-2"><span>School name *</span><input id="sc-name" placeholder="Klinik Sejahtera Cheras"></label>
-          <label class="field"><span>City</span><input id="sc-city" placeholder="Jakarta"></label>
-          <label class="field"><span>Tier</span>
-            <select id="sc-tier">
-              <option value="tier1_spk">Tier 1 — SPK/International</option>
-              <option value="tier2_elite">Tier 2 — Elite private</option>
-              <option value="tier3_islamic">Tier 3 — Islamic network</option>
-              <option value="tier4_regional">Tier 4 — Regional</option>
-            </select></label>
-          <label class="field"><span>Status</span>
-            <select id="sc-status">
-              <option value="prospect">Prospect</option><option value="contacted">Contacted</option>
-              <option value="meeting">Meeting</option><option value="mou_signed">MoU signed</option>
-              <option value="pic_appointed">PIC appointed</option><option value="active">Active</option>
-            </select></label>
-          <label class="field"><span>Contact name</span><input id="sc-contact"></label>
-          <label class="field"><span>Contact role</span><input id="sc-role" placeholder="Kepala Sekolah / BK"></label>
-          <label class="field"><span>Contact email</span><input id="sc-email" type="email"></label>
-          <label class="field"><span>Contact phone</span><input id="sc-phone"></label>
-          <label class="field"><span>WhatsApp</span><input id="sc-wa" placeholder="+62 8xx"></label>
-          <label class="field"><span>Website</span><input id="sc-web" placeholder="https://"></label>
-          <label class="field span-2"><span>Notes</span><textarea id="sc-notes" rows="2"></textarea></label>
-        </div>
-        <div class="form-foot">
-          <button class="btn primary" onclick="addSchool()">Create school</button>
-          <span id="sc-msg" class="msg"></span>
-        </div>
-      </div>
-
-      <div class="card table-card">
-        <div class="table-wrap">
-          <table id="schools-table" class="data">
-            <thead><tr><th>Klinik</th><th>City</th><th>Tier</th><th>Status</th><th>Contact</th><th>WhatsApp</th><th>Updated</th></tr></thead>
-            <tbody></tbody>
-          </table>
-        </div>
-        <p id="schools-empty" class="empty hidden">Tiada klinik yang sepadan.</p>
-      </div>
-    </section>
-
-    <!-- ===== ADD LEAD ===== -->
+    <!-- ===== DAFTAR PESAKIT (ADD PATIENT) ===== -->
     <section id="tab-add" class="tabpanel hidden">
       <header class="page-head">
-        <div><span class="eyebrow">Quick</span><h1>Tambah pesakit</h1></div>
+        <div><span class="eyebrow">Kaunter</span><h1>Pendaftaran Pesakit Baru</h1></div>
       </header>
       <div class="add-grid">
         <div class="card form-card">
-          <div class="card-head"><h3>Add patient (manual)</h3></div>
+          <div class="card-head"><h3>Borang Pendaftaran Pesakit (Walk-in / Telefon)</h3></div>
           <div class="form-grid">
-            <label class="field span-2"><span>Full name *</span><input id="a-name" placeholder="Nur Aisyah binti Rahman"></label>
-            <label class="field"><span>Email</span><input id="a-email" type="email" placeholder="aisyah@gmail.com"></label>
-            <label class="field"><span>Phone (WhatsApp)</span><input id="a-phone" placeholder="+62 812 …"></label>
-            <label class="field span-2"><span>Rawatan / aduan</span><input id="a-program" placeholder="GP Consultation / Dental Scaling"></label>
+            <label class="field span-2"><span>Nama Penuh Pesakit *</span><input id="a-name" placeholder="cth: Ahmad Fauzi bin Razak"></label>
+            <label class="field"><span>No. Kad Pengenalan (IC) / Passport</span><input id="a-ic" placeholder="920101-10-5544"></label>
+            <label class="field"><span>No. Telefon (WhatsApp) *</span><input id="a-phone" placeholder="012-3456789"></label>
+            <label class="field"><span>Jenis Rawatan / Aduan Utama</span>
+              <select id="a-treatment">
+                <option value="Demam / Selesema / Batuk">Demam / Selesema / Batuk (GP)</option>
+                <option value="Pemeriksaan Kesihatan & Darah">Pemeriksaan Kesihatan &amp; Darah (GP)</option>
+                <option value="Sakit Perut / Gastrik">Sakit Perut / Gastrik (GP)</option>
+                <option value="Luka / Suntikan Vaksin">Luka / Suntikan Vaksin (GP)</option>
+                <option value="Dental Scaling & Cleaning">Pemeriksaan Gigi &amp; Scaling</option>
+                <option value="Tampalan & Cabutan Gigi">Tampalan &amp; Cabutan Gigi</option>
+                <option value="Konsultasi Lain">Konsultasi Umum / Lain-lain</option>
+              </select>
+            </label>
+            <label class="field"><span>Alahan Ubat (Allergies)</span><input id="a-allergies" placeholder="cth: Penicillin / Tiada" style="border-color:var(--rose)"></label>
+            <label class="field"><span>Panel Insurans / Pembayaran</span>
+              <select id="a-panel">
+                <option value="Sendiri / Tunai / QR">Sendiri (Tunai / DuitNow QR)</option>
+                <option value="PMCare">Panel PMCare</option>
+                <option value="MiCare">Panel MiCare</option>
+                <option value="AIA / Prudential">Panel AIA / Prudential</option>
+                <option value="Kementerian Kesihatan (Peka B40)">Skim Peka B40</option>
+              </select>
+            </label>
+            <label class="field span-2"><span>Catatan Ringkas / Sejarah Penyakit</span><textarea id="a-notes" rows="2" placeholder="cth: Ada darah tinggi, makan ubat Amlodipine"></textarea></label>
           </div>
           <div class="form-foot">
-            <button class="btn primary" onclick="addLeadManual()">Create patient</button>
+            <button class="btn primary" onclick="addPatientManual()">Daftar Pesakit &amp; Masuk Giliran</button>
             <span id="add-msg" class="msg"></span>
           </div>
         </div>
         <aside class="note-card">
-          <span class="eyebrow">Nota</span>
-          <h3>Most patients arrive on their own.</h3>
-          <p>Walk-in, WhatsApp, and website inquiries are created automatically via webhooks. Use this form for walk-ins, referrals, and phone bookings.</p>
+          <span class="eyebrow">Panduan Kaunter</span>
+          <h3>Pesakit WhatsApp Didaftar Automatik.</h3>
+          <p>Bila pesakit WhatsApp nombor klinik, Alisya akan kumpul nama, no telefon &amp; jenis rawatan secara automatik ke dalam Inbox dan Pipeline.</p>
           <ul>
-            <li>Phone in international format so Alisya can link the chat.</li>
-            <li>Treatment is free text — the drawer lets you add university submissions later.</li>
+            <li>Gunakan borang ini khas untuk pesakit <b>Walk-in</b> atau panggilan telefon terus ke kaunter.</li>
+            <li>Pastikan alahan ubat dicatat dengan jelas demi keselamatan pesakit.</li>
           </ul>
         </aside>
       </div>

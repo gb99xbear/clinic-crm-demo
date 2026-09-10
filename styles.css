@@ -628,3 +628,40 @@ body.nav-open .menu-btn span:nth-child(3) { transform: translateY(-6px) rotate(-
 .terms-page h3 { font-size: 15px; margin: 18px 0 6px; }
 .terms-page h3:first-child { margin-top: 0; }
 .terms-page p { margin: 0; max-width: 72ch; }
+
+/* ---------- Calendar Engine (GP Clinic) ---------- */
+.cal-layout { display: grid; grid-template-columns: 1fr 380px; gap: 18px; margin-top: 16px; }
+.cal-month-card { padding: 18px; display: flex; flex-direction: column; gap: 12px; }
+.cal-nav-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+.cal-nav-bar h3 { font-size: 18px; color: var(--teal); }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+.cal-day-header { text-align: center; font-size: 11.5px; font-weight: 700; color: var(--ink-3); padding: 6px 0; text-transform: uppercase; }
+.cal-cell { min-height: 70px; background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 6px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; transition: all .15s ease; }
+.cal-cell:hover { border-color: var(--teal); background: var(--teal-soft); }
+.cal-cell.empty { background: transparent; border-color: transparent; cursor: default; }
+.cal-cell.selected { border-color: var(--teal); background: var(--teal-soft); box-shadow: 0 0 0 2px var(--teal); }
+.cal-cell.today { border-color: var(--saffron); }
+.cal-cell.today .cal-date-num { color: var(--saffron); font-weight: 700; }
+.cal-date-num { font-size: 12px; font-weight: 600; }
+.cal-dot-count { font-size: 10px; background: var(--teal); color: #fff; border-radius: 4px; padding: 2px 4px; text-align: center; margin-top: auto; }
+.cal-day-card { padding: 18px; display: flex; flex-direction: column; gap: 14px; }
+.cal-slot-list { display: flex; flex-direction: column; gap: 8px; max-height: 520px; overflow-y: auto; }
+.cal-slot-item { display: flex; align-items: center; justify-content: space-between; background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; gap: 10px; cursor: pointer; transition: background .15s; }
+.cal-slot-item:hover { background: #fff; border-color: var(--teal); }
+.slot-time { display: flex; flex-direction: column; width: 65px; border-right: 2px solid var(--line); padding-right: 8px; }
+.slot-time b { font-size: 13px; color: var(--teal); font-family: var(--font-mono); }
+.slot-time small { font-size: 10.5px; color: var(--ink-3); }
+.slot-info { display: flex; flex-direction: column; flex: 1; gap: 2px; }
+.slot-info b { font-size: 13px; }
+.slot-info span { font-size: 11.5px; color: var(--teal); }
+.slot-info small { font-size: 10.5px; }
+.status-pill { font-size: 10.5px; font-weight: 600; padding: 2px 8px; border-radius: 99px; text-transform: capitalize; }
+.status-pill.status-confirmed, .status-pill.status-waiting { background: var(--wa-soft); color: var(--wa); }
+.status-pill.status-in_consultation { background: var(--saffron-soft); color: var(--saffron); }
+.status-pill.status-completed { background: var(--teal-soft); color: var(--teal); }
+.allergy-tag { display: inline-block; font-size: 11px; font-weight: 700; color: var(--rose); background: var(--rose-soft); padding: 1px 6px; border-radius: 4px; margin-top: 3px; }
+.alert-box-danger { background: var(--rose-soft); border: 1px solid var(--rose); color: var(--rose); padding: 10px 14px; border-radius: 8px; margin: 12px 0; font-size: 13px; }
+
+@media (max-width: 960px) {
+  .cal-layout { grid-template-columns: 1fr; }
+}
