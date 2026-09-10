@@ -87,7 +87,8 @@ async function doLogout() { await fetch("/logout"); showLogin(); }
 
 function showTab(name) {
   document.querySelectorAll(".tab").forEach((t) => t.classList.remove("active"));
-  document.querySelector(`.tab[data-tab="${name}"]`).classList.add("active");
+  const navBtn = document.querySelector(`.tab[data-tab="${name}"]`);
+  if (navBtn) navBtn.classList.add("active"); else document.querySelector('.tab[data-tab="pricing"]')?.classList.add("active");
   document.querySelectorAll(".tabpanel").forEach((p) => p.classList.add(HIDDEN));
   const panel = $(`tab-${name}`);
   panel.classList.remove(HIDDEN);

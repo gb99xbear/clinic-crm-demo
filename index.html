@@ -510,11 +510,11 @@
         <div class="price-card">
           <span class="price-kicker">Starter</span>
           <div class="price-head"><b>RM599</b><span>setup</span><b class="sub">+ RM99/mo</b></div>
-          <p class="hint">Kedai / tuition · 1–2 numbers · 1 staff</p>
+          <p class="hint">GP / Dental · 1 klinik · 1–2 numbers · 1 staff</p>
           <ul>
             <li>Patients, pipeline 5 stages, kanban 8/page, inbox, dashboard, follow-up queue</li>
             <li>Alisya WA auto-reply · 20-exchange memory · anti-repeat</li>
-            <li><b>2 devices max</b> · 200 patients/mo (walk-in + WA)/month (Scout)</li>
+            <li><b>2 devices max</b> · 200 patients/mo (walk-in + WA)</li>
             <li>Subdomain <span class="mono">klinikanda.care</span> · weekly backup</li>
             <li>WA support · 48h fix</li>
           </ul>
@@ -524,10 +524,10 @@
           <span class="price-badge">Most chosen</span>
           <span class="price-kicker">Pro</span>
           <div class="price-head"><b>RM999</b><span>setup</span><b class="sub">+ RM199/mo</b></div>
-          <p class="hint">Tuition besar · 3–5 numbers · 3 staff</p>
+          <p class="hint">2–3 cawangan · 3–5 numbers · 3 staff</p>
           <ul>
             <li>Everything in Starter + priority views</li>
-            <li><b>5 devices max</b> · 500 patients/mo/month</li>
+            <li><b>5 devices max</b> · 500 patients/mo</li>
             <li>Custom <span class="mono">crm.klinikanda.care</span> · daily backup</li>
             <li>WA support · 24h priority</li>
           </ul>
@@ -539,20 +539,62 @@
           <p class="hint">Your VPS · your domain · you host</p>
           <ul>
             <li>Source code + training 2h</li>
-            <li>5 devices (configurable) · unlimited Scout (your run)</li>
+            <li>5 devices (configurable) · unlimited patients</li>
             <li>30-day onboarding only · you manage updates</li>
           </ul>
           <button class="btn ghost block" onclick="contactPricing('Self-Host')">Get source</button>
         </div>
       </div>
-      <div class="card" style="margin-top:18px">
-        <div class="card-head"><h3>Why one-time + monthly?</h3></div>
-        <p class="hint">Setup = migration + training. Monthly = VPS, security patches, Scout leads, updates. Without monthly we'd charge RM2k+ upfront and leave you alone — hybrid is cheaper and you stay updated.</p>
-        <div class="card-head" style="margin-top:14px"><h3>Device limit?</h3></div>
-        <p class="hint"><b>MAX 5 devices</b> — single WAHA <span class="mono">noweb-arm :3000</span>, 1 QR per session (slug <span class="mono">^[a-z0-9_-]{1,20}$</span>). Starter cap 2, Pro cap 5 — enough for sales + admin + owner. Need 10? We can raise on Pro.</p>
-        <div class="card-head" style="margin-top:14px"><h3>WhatsApp — official API or not?</h3></div>
-        <p class="hint">We use <b>WAHA WhatsApp Web automation</b> (scan QR, mirrors whatsapp.com) — <b>NOT the Official WhatsApp Business API</b>. Why: no per-conversation fee (official = RM0.15–0.30/24h), setup 10 min. Risk: WhatsApp can temp-block spam (>30 new chats/hour). We mitigate: warm-up ≤10/day (3 days), queue with retry, backup 2 numbers, anti-dupe 85%. Need green-tick? We migrate to Official API later — extra Meta/BSP fees apply.</p>
-        <p style="margin-top:10px"><a href="https://github.com/gb99xbear/campusbridge-crm-demo/blob/main/TERMS.md" target="_blank" rel="noopener">Read full TERMS & disclosure →</a> · <a href="https://github.com/gb99xbear/campusbridge-crm-demo/blob/main/PRICING.md" target="_blank" rel="noopener">PRICING.md →</a></p>
+      <div class="pricing-faq card">
+        <div class="pricing-faq-head"><h3>Frequently asked</h3></div>
+        <div class="faq-item">
+          <h4>Why one-time + monthly?</h4>
+          <p class="hint">Setup covers data migration, training (2h), and system configuration. Monthly covers hosting, security patches, updates, and support — so your clinic always runs the latest version. Without a monthly, we'd have to charge RM2,000+ upfront and leave you alone afterwards.</p>
+        </div>
+        <div class="faq-item">
+          <h4>What's the device limit?</h4>
+          <p class="hint">Starter supports 2 WhatsApp numbers, Pro supports up to 5. Each number pairs via a simple QR scan. That's enough for front desk + doctor + owner. Need more? We can raise the cap on Pro.</p>
+        </div>
+        <div class="faq-item">
+          <h4>WhatsApp — official API or not?</h4>
+          <p class="hint">We use WhatsApp Web automation (each number scans a QR, mirroring whatsapp.com) — not the Official WhatsApp Business API. Why: no per-conversation fee and a 10-minute setup. Trade-off: WhatsApp may temporary-block numbers that send spam, so we enforce warm-up limits, smart queues, and anti-duplicate guards. Want the official green-tick later? We can migrate you — extra Meta/BSP fees apply.</p>
+        </div>
+        <div class="faq-item">
+          <h4>Is Alisya giving medical advice?</h4>
+          <p class="hint">No. Alisya books appointments, sends reminders, and follows up no-shows. She never diagnoses, prescribes, or promises outcomes — clinical questions always go to your doctor.</p>
+        </div>
+        <div class="pricing-cta-row">
+          <button class="btn primary" onclick="showTab('terms')">Read full Terms &amp; disclosure →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== TERMS ===== -->
+    <section id="tab-terms" class="tabpanel hidden">
+      <header class="page-head">
+        <div><span class="eyebrow">Legal</span><h1>Terms &amp; Disclosure</h1><p class="hint">Full terms for Klinik CRM packages — WhatsApp automation disclosure, PDPA consent, and medical disclaimer.</p></div>
+      </header>
+      <div class="card terms-page">
+        <h3>1. What technology we use</h3>
+        <p class="hint">Klinik CRM uses WhatsApp Web automation — each number scans a QR code, and the system mirrors whatsapp.com sessions. This is <b>not</b> the Official WhatsApp Business API (Meta / green-tick API).</p>
+        <h3>2. Why we chose it</h3>
+        <p class="hint">Official API charges per conversation (est. RM0.15–0.30 per 24h window) plus BSP fees. Web automation has no per-message fee — that's why Starter is RM99/mo, not RM300+. Setup is 10 minutes via QR, no Meta business verification wait.</p>
+        <h3>3. Risks you must know</h3>
+        <p class="hint">WhatsApp's terms allow them to temp-block or ban numbers that behave like spam (bulk blasting, >30 unsolicited messages/hour, recipient reports). A ban affects your phone number, not our server — only WhatsApp Support can unblock. Our system does not bypass WhatsApp's encryption or limits.</p>
+        <h3>4. How we mitigate</h3>
+        <p class="hint">Warm-up: first 3 days ≤10 outbound messages/day per number, only to contacts who consented. Rate limit: ≤30 new conversations/hour per device, with a durable queue and retry. Backup: keep at least 2 numbers so one block never halts your clinic. Anti-spam: Alisya never sends duplicate messages (85% similarity guard).</p>
+        <h3>5. Your responsibilities</h3>
+        <p class="hint">Only message patients who gave consent (PDPA Malaysia). No purchased lists. Don't blast beyond the limits above. Keep the paired phone online for session sync.</p>
+        <h3>6. Upgrade path</h3>
+        <p class="hint">If you need the green-tick, template approvals, or >1,000 messages/day, we can migrate you to the Official WhatsApp Business API — additional Meta/BSP costs apply. Your patient data migrates, no rebuild.</p>
+        <h3>7. Medical disclaimer</h3>
+        <p class="hint"><b>Alisya is an appointment assistant, not a doctor.</b> No diagnosis, no dosage, no treatment promises. Clinical questions are always referred to your qualified doctor.</p>
+        <h3>8. Acceptance</h3>
+        <p class="hint">By signing the setup invoice, you confirm you have read this disclosure and accept the trade-off: lower cost now with manageable automation risk, versus higher cost with official guarantees.</p>
+        <div class="pricing-cta-row" style="margin-top:14px">
+          <button class="btn ghost" onclick="showTab('pricing')">← Back to pricing</button>
+          <button class="btn primary" onclick="contactPricing('Klinik CRM')">Contact us on WhatsApp</button>
+        </div>
       </div>
     </section>
 
