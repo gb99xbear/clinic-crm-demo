@@ -595,8 +595,11 @@ body.nav-open .menu-btn span:nth-child(3) { transform: translateY(-6px) rotate(-
     box-shadow: var(--shadow-lg);
   }
   .sidebar.open { transform: translateX(0); }
-  .sidebar .brand, .sidebar-foot, .nav-sep, .nav .tab span, .nav-count, .nav-dot { display: flex; }
+  .sidebar .brand, .sidebar-foot, .nav-sep, .nav .tab span, .nav-count, .nav-dot, .user div { display: flex; }
   .sidebar .brand, .nav-sep { display: block; }
+  .sidebar-foot .btn { font-size: 12px; padding: 6px 12px; }
+  .sidebar-foot .btn::before { display: none; }
+  .user { justify-content: flex-start; }
   .nav { flex-direction: column; overflow-y: auto; }
   .nav .tab { justify-content: flex-start; padding: 11px 12px; }
 
