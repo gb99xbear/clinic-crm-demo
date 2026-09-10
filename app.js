@@ -71,6 +71,9 @@ function fail(e) { if (e.message !== "unauthorized") { console.error(e); toast("
 
 function showLogin() {
   $("login").classList.remove(HIDDEN); $("app").classList.add(HIDDEN);
+  const tb = document.getElementById('mobile-topbar');
+  if (tb) tb.classList.add(HIDDEN);
+  closeSidebar();
   if (pollTimer) clearInterval(pollTimer);
 }
 async function doLogin() {
@@ -78,10 +81,24 @@ async function doLogin() {
     const r = await fetch("/login", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ password: $("login-pw").value }) });
     if (!r.ok) throw new Error("bad");
     $("login").classList.add(HIDDEN); $("app").classList.remove(HIDDEN);
+    const tb = document.getElementById('mobile-topbar');
+    if (tb) tb.classList.remove(HIDDEN);
     startApp();
   } catch { $("login-msg").textContent = "Wrong password"; $("login-msg").classList.add("err"); }
 }
 async function doLogout() { await fetch("/logout"); showLogin(); }
+
+
+// ---------- mobile sidebar ----------
+function toggleSidebar(force) {
+  const sb = document.querySelector('.sidebar');
+  const bd = document.getElementById('sidebar-backdrop');
+  const open = force !== undefined ? force : !sb.classList.contains('open');
+  sb.classList.toggle('open', open);
+  bd.classList.toggle('hidden', !open);
+  document.body.classList.toggle('nav-open', open);
+}
+function closeSidebar() { toggleSidebar(false); }
 
 // ---------- tabs ----------
 
@@ -89,6 +106,7 @@ function showTab(name) {
   document.querySelectorAll(".tab").forEach((t) => t.classList.remove("active"));
   const navBtn = document.querySelector(`.tab[data-tab="${name}"]`);
   if (navBtn) navBtn.classList.add("active"); else document.querySelector('.tab[data-tab="pricing"]')?.classList.add("active");
+  if (window.innerWidth <= 720) closeSidebar();
   document.querySelectorAll(".tabpanel").forEach((p) => p.classList.add(HIDDEN));
   const panel = $(`tab-${name}`);
   panel.classList.remove(HIDDEN);
