@@ -1,0 +1,600 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Klinik CRM — GP & Dental</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..700,50&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ============ LOGIN ============ -->
+<div id="login" class="login">
+  <div class="login-art" aria-hidden="true">
+    <div class="login-blob b1"></div>
+    <div class="login-blob b2"></div>
+    <svg class="login-lines" viewBox="0 0 600 600" preserveAspectRatio="none">
+      <path d="M0 420 C150 380 250 520 400 460 S560 380 600 400" />
+      <path d="M0 470 C150 430 250 570 400 510 S560 430 600 450" />
+      <path d="M0 520 C150 480 250 620 400 560 S560 480 600 500" />
+    </svg>
+    <div class="login-tag">
+      <span class="eyebrow">Klinik · GP & Dental</span>
+      <h1>Pesakit ke temujanji,<br>satu sistem.</h1>
+      <p>Alisya jaga WhatsApp klinik — booking, reminder, follow-up tanpa hilang patient.</p>
+    </div>
+  </div>
+  <div class="login-panel">
+    <div class="brand">
+      <span class="brand-mark">KC</span>
+      <div><b>Klinik CRM</b><small>GP & Dental · back office</small></div>
+    </div>
+    <h2>Selamat datang kembali</h2>
+    <p class="hint">Masukkan kata laluan pejabat untuk masuk.</p>
+    <label class="field">
+      <span>Password</span>
+      <input id="login-pw" type="password" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+    </label>
+    <button class="btn primary block" onclick="doLogin()">Log masuk →</button>
+    <p id="login-msg" class="msg"></p>
+    <p class="hint tiny">Demo build · any password works · data is mocked in-browser</p>
+  </div>
+</div>
+
+<!-- ============ APP ============ -->
+<div id="app" class="app hidden">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand-mark">KC</span>
+      <div><b>Klinik CRM</b><small>GP & Dental</small></div>
+    </div>
+
+    <nav class="nav">
+      <button class="tab active" data-tab="overview" onclick="showTab('overview')">
+        <i class="ic">▦</i><span>Overview</span></button>
+      <button class="tab" data-tab="leads" onclick="showTab('leads')">
+        <i class="ic">☺</i><span>Leads</span><em id="nav-leads-count" class="nav-count"></em></button>
+      <button class="tab" data-tab="inbox" onclick="showTab('inbox')">
+        <i class="ic">✉</i><span>Inbox</span><em id="nav-inbox-count" class="nav-count wa"></em></button>
+      <button class="tab" data-tab="schools" onclick="showTab('schools')">
+        <i class="ic">⌂</i><span>Referrals</span></button>
+      <div class="nav-sep"><span>Alisya</span></div>
+      <button class="tab" data-tab="devices" onclick="showTab('devices')">
+        <i class="ic">▤</i><span>Devices</span><em id="nav-dev-dot" class="nav-dot"></em></button>
+      <button class="tab" data-tab="settings" onclick="showTab('settings')">
+        <i class="ic">⚙</i><span>Settings</span></button>
+      <button class="tab" data-tab="pricing" onclick="showTab('pricing')">
+        <i class="ic">◈</i><span>Pricing</span><em class="nav-count" style="background:var(--saffron);color:#fff">MYR</em></button>
+      <div class="nav-sep"><span>Quick</span></div>
+      <button class="tab" data-tab="add" onclick="showTab('add')">
+        <i class="ic">＋</i><span>Add Lead</span></button>
+    </nav>
+
+    <div class="sidebar-foot">
+      <div class="user">
+        <span class="avatar">SB</span>
+        <div><b>Staff · Bear</b><small>Kuala Lumpur · GMT+8</small></div>
+      </div>
+      <button class="btn ghost small" onclick="doLogout()">Logout</button>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <!-- ===== OVERVIEW ===== -->
+    <section id="tab-overview" class="tabpanel">
+      <header class="page-head">
+        <div>
+          <span class="eyebrow">Overview</span>
+          <h1>Pipeline pesakit</h1>
+        </div>
+        <div class="page-actions">
+          <div class="segmented dashboard-window-buttons">
+            <button data-days="all" class="current" onclick="setDashboardWindow(null)">All time</button>
+            <button data-days="7" onclick="setDashboardWindow(7)">7 days</button>
+            <button data-days="30" onclick="setDashboardWindow(30)">30 days</button>
+          </div>
+        </div>
+      </header>
+
+      <div id="stat-cards" class="stat-grid"></div>
+
+      <div class="dash-grid">
+        <section class="card span-8">
+          <div class="card-head">
+            <h3>Patient pipeline</h3>
+            <div class="filters compact">
+              <input id="dash-search" placeholder="Cari nama / rawatan…" oninput="renderDashboard()">
+              <select id="dash-source" onchange="renderDashboard()"><option value="">All sources</option></select>
+              <select id="dash-stage" onchange="renderDashboard()"><option value="">All stages</option></select>
+              <select id="dash-engagement" onchange="renderDashboard()"><option value="">All engagement</option></select>
+              <button class="btn ghost small" onclick="resetDashboardFilters()">Reset</button>
+            </div>
+          </div>
+          <div id="lead-kanban" class="kanban"></div>
+        </section>
+
+        <section class="card span-4">
+          <div class="card-head"><h3>Follow-up queue</h3><span class="hint">Susulan hari ini</span></div>
+          <div id="followup-queue" class="followups"></div>
+        </section>
+
+        <section class="card span-4">
+          <div class="card-head"><h3>Patients by channel</h3></div>
+          <div id="source-funnel" class="bars"></div>
+        </section>
+        <section class="card span-4">
+          <div class="card-head"><h3>Engagement</h3></div>
+          <div id="dashboard-engagement" class="bars"></div>
+        </section>
+        <section class="card span-4">
+          <div class="card-head"><h3>Created trend</h3></div>
+          <div id="dashboard-created-trend" class="trend"></div>
+        </section>
+
+        <section class="card span-6">
+          <div class="card-head"><h3>Conversion funnel</h3><span class="hint">% of total · % of previous</span></div>
+          <div id="dashboard-funnel" class="funnel"></div>
+        </section>
+        <section class="card span-6">
+          <div class="card-head"><h3>Source → stage</h3></div>
+          <div id="dashboard-source-stage" class="matrix-wrap"></div>
+        </section>
+      </div>
+    </section>
+
+    <!-- ===== LEADS ===== -->
+    <section id="tab-leads" class="tabpanel hidden">
+      <header class="page-head">
+        <div><span class="eyebrow">Pesakit</span><h1>Semua pesakit</h1></div>
+        <div class="page-actions"><button class="btn primary" onclick="showTab('add')">＋ Add lead</button></div>
+      </header>
+      <div class="toolbar">
+        <div class="filters">
+          <input id="f-search" placeholder="Search name, email, phone…" oninput="debounce(loadLeads)()">
+          <select id="f-source" onchange="loadLeads()">
+            <option value="">All sources</option>
+            <option value="manual">Manual</option><option value="website">Website</option>
+            <option value="whatsapp">WhatsApp</option><option value="email">Email</option>
+          </select>
+          <select id="f-stage" onchange="loadLeads()"><option value="">All stages</option></select>
+          <select id="f-engagement" onchange="loadLeads()"><option value="">All engagement</option></select>
+          <label class="toggle"><input id="f-overdue" type="checkbox" onchange="loadLeads()"><i></i><span>Overdue only</span></label>
+        </div>
+        <span id="leads-count" class="hint"></span>
+      </div>
+      <div class="card table-card">
+        <div class="table-wrap">
+          <table id="leads-table" class="data">
+            <thead><tr>
+              <th>Name</th><th>Source</th><th>Stage</th><th>Engagement</th>
+              <th>Rawatan</th><th>Next follow-up</th><th>Updated</th>
+            </tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <p id="leads-empty" class="empty hidden">Tiada pesakit yang sepadan.</p>
+      </div>
+    </section>
+
+    <!-- ===== INBOX ===== -->
+    <section id="tab-inbox" class="tabpanel hidden">
+      <header class="page-head">
+        <div><span class="eyebrow">Inbox</span><h1>WhatsApp · Alisya</h1></div>
+        <div class="page-actions">
+          <select id="ib-device" onchange="loadInboxChats()"><option value="">All devices</option></select>
+          <button class="btn ghost" onclick="loadInboxChats()">↻ Refresh</button>
+        </div>
+      </header>
+      <div class="inbox">
+        <aside class="inbox-list card">
+          <div class="card-head"><h3>Conversations</h3><span id="ib-count" class="hint"></span></div>
+          <input id="ib-search" class="inbox-search" placeholder="Cari chat…" oninput="renderInboxList()">
+          <div id="ib-chat" class="chat-list"></div>
+        </aside>
+        <section class="inbox-thread card">
+          <div id="ib-thread-head" class="thread-head"><span class="hint">Pilih perbualan</span></div>
+          <div id="ib-msgs" class="thread"></div>
+          <div class="composer">
+            <textarea id="ib-reply" rows="1" placeholder="Tulis balasan… (Enter untuk hantar)" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendInboxReply()}"></textarea>
+            <button class="btn wa" onclick="sendInboxReply()">Send</button>
+            <button id="ib-pause" class="btn ghost" onclick="toggleBotPause()">⏸ Pause bot</button>
+          </div>
+        </section>
+        <aside class="inbox-ctx card">
+          <div class="card-head"><h3>Contact context</h3></div>
+          <div id="ib-ctx" class="ctx"><p class="hint">Select a conversation</p></div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ===== SCHOOLS ===== -->
+    <section id="tab-schools" class="tabpanel hidden">
+      <header class="page-head">
+        <div><span class="eyebrow">Partners</span><h1>Rakan rujukan</h1></div>
+        <div class="page-actions"><button class="btn primary" onclick="toggleSchoolForm()">＋ Add school</button></div>
+      </header>
+      <div class="toolbar">
+        <div class="filters">
+          <input id="s-search" placeholder="Search klinik, city, contact…" oninput="debounce(loadSchools)()">
+          <select id="s-status" onchange="loadSchools()"><option value="">All statuses</option></select>
+          <select id="s-tier" onchange="loadSchools()">
+            <option value="">All tiers</option>
+            <option value="tier1_spk">Tier 1 — SPK/International</option>
+            <option value="tier2_elite">Tier 2 — Elite private</option>
+            <option value="tier3_islamic">Tier 3 — Islamic network</option>
+            <option value="tier4_regional">Tier 4 — Regional</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="school-form" class="card form-card hidden">
+        <div class="card-head"><h3>Add referral partner</h3><button class="btn ghost small" onclick="toggleSchoolForm()">✕</button></div>
+        <div class="form-grid">
+          <label class="field span-2"><span>School name *</span><input id="sc-name" placeholder="Klinik Sejahtera Cheras"></label>
+          <label class="field"><span>City</span><input id="sc-city" placeholder="Jakarta"></label>
+          <label class="field"><span>Tier</span>
+            <select id="sc-tier">
+              <option value="tier1_spk">Tier 1 — SPK/International</option>
+              <option value="tier2_elite">Tier 2 — Elite private</option>
+              <option value="tier3_islamic">Tier 3 — Islamic network</option>
+              <option value="tier4_regional">Tier 4 — Regional</option>
+            </select></label>
+          <label class="field"><span>Status</span>
+            <select id="sc-status">
+              <option value="prospect">Prospect</option><option value="contacted">Contacted</option>
+              <option value="meeting">Meeting</option><option value="mou_signed">MoU signed</option>
+              <option value="pic_appointed">PIC appointed</option><option value="active">Active</option>
+            </select></label>
+          <label class="field"><span>Contact name</span><input id="sc-contact"></label>
+          <label class="field"><span>Contact role</span><input id="sc-role" placeholder="Kepala Sekolah / BK"></label>
+          <label class="field"><span>Contact email</span><input id="sc-email" type="email"></label>
+          <label class="field"><span>Contact phone</span><input id="sc-phone"></label>
+          <label class="field"><span>WhatsApp</span><input id="sc-wa" placeholder="+62 8xx"></label>
+          <label class="field"><span>Website</span><input id="sc-web" placeholder="https://"></label>
+          <label class="field span-2"><span>Notes</span><textarea id="sc-notes" rows="2"></textarea></label>
+        </div>
+        <div class="form-foot">
+          <button class="btn primary" onclick="addSchool()">Create school</button>
+          <span id="sc-msg" class="msg"></span>
+        </div>
+      </div>
+
+      <div class="card table-card">
+        <div class="table-wrap">
+          <table id="schools-table" class="data">
+            <thead><tr><th>Klinik</th><th>City</th><th>Tier</th><th>Status</th><th>Contact</th><th>WhatsApp</th><th>Updated</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <p id="schools-empty" class="empty hidden">Tiada klinik yang sepadan.</p>
+      </div>
+    </section>
+
+    <!-- ===== ADD LEAD ===== -->
+    <section id="tab-add" class="tabpanel hidden">
+      <header class="page-head">
+        <div><span class="eyebrow">Quick</span><h1>Tambah pesakit</h1></div>
+      </header>
+      <div class="add-grid">
+        <div class="card form-card">
+          <div class="card-head"><h3>Add patient (manual)</h3></div>
+          <div class="form-grid">
+            <label class="field span-2"><span>Full name *</span><input id="a-name" placeholder="Nur Aisyah binti Rahman"></label>
+            <label class="field"><span>Email</span><input id="a-email" type="email" placeholder="aisyah@gmail.com"></label>
+            <label class="field"><span>Phone (WhatsApp)</span><input id="a-phone" placeholder="+62 812 …"></label>
+            <label class="field span-2"><span>Rawatan / aduan</span><input id="a-program" placeholder="GP Consultation / Dental Scaling"></label>
+          </div>
+          <div class="form-foot">
+            <button class="btn primary" onclick="addLeadManual()">Create patient</button>
+            <span id="add-msg" class="msg"></span>
+          </div>
+        </div>
+        <aside class="note-card">
+          <span class="eyebrow">Nota</span>
+          <h3>Most patients arrive on their own.</h3>
+          <p>Walk-in, WhatsApp, and website inquiries are created automatically via webhooks. Use this form for walk-ins, referrals, and phone bookings.</p>
+          <ul>
+            <li>Phone in international format so Alisya can link the chat.</li>
+            <li>Treatment is free text — the drawer lets you add university submissions later.</li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ===== SETTINGS ===== -->
+    <section id="tab-settings" class="tabpanel hidden">
+      <header class="page-head">
+        <div><span class="eyebrow">Alisya</span><h1>Bot settings</h1></div>
+        <div class="page-actions"><span class="hint">Changes apply live on the next WhatsApp message.</span></div>
+      </header>
+      <div class="settings">
+        <nav class="subnav" id="settings-subnav">
+          <button class="current" data-sub="persona" onclick="showSub('persona')">Persona</button>
+          <button data-sub="behaviour" onclick="showSub('behaviour')">Behaviour</button>
+          <button data-sub="knowledge" onclick="showSub('knowledge')">Knowledge</button>
+          <button data-sub="memory" onclick="showSub('memory')">Memory</button>
+          <button data-sub="training" onclick="showSub('training')">Training</button>
+          <button data-sub="model" onclick="showSub('model')">Model</button>
+          <button data-sub="provider" onclick="showSub('provider')">Providers</button>
+          <button data-sub="actions" onclick="showSub('actions')">CRM actions</button>
+          <button data-sub="playground" onclick="showSub('playground')">Playground</button>
+        </nav>
+
+        <div class="subpanels">
+
+          <!-- persona -->
+          <div id="sub-persona" class="subpanel card">
+            <div class="card-head">
+              <h3>Persona</h3>
+              <div class="filters compact">
+                <select id="cfg-scope" onchange="loadAlisyaConfig()"><option value="global">🌐 Global</option></select>
+                <span id="cfg-persona-mode-wrap" class="hidden">
+                  <select id="cfg-persona_mode" onchange="onCfgPersonaModeChange()">
+                    <option value="share">Share global</option><option value="custom">Custom for this device</option>
+                  </select>
+                </span>
+              </div>
+            </div>
+            <div class="form-grid">
+              <label class="field"><span>Persona name</span><input id="cfg-persona_name"></label>
+              <label class="field"><span>Working hours (display)</span><input id="cfg-working_hours" placeholder="Isnin–Jumaat 9am–6pm"></label>
+              <label class="field span-2"><span>Persona tone</span><input id="cfg-persona_tone"></label>
+              <label class="field span-2"><span>Persona intro</span><textarea id="cfg-persona_intro" rows="3"></textarea></label>
+              <label class="field span-2"><span>Away message</span><textarea id="cfg-away_message" rows="2"></textarea></label>
+              <div class="field"><span>Active hours (0–23)</span>
+                <div class="row"><input id="cfg-active_from" type="number" min="0" max="23"><b>—</b><input id="cfg-active_to" type="number" min="0" max="23"></div>
+              </div>
+              <label class="field"><span>Ignore keywords (comma separated)</span><input id="cfg-ignore_keywords"></label>
+              <div class="span-2 checks">
+                <label class="toggle"><input id="cfg-auto_reply" type="checkbox"><i></i><span>Auto reply enabled</span></label>
+                <label class="toggle"><input id="cfg-ignore_groups" type="checkbox"><i></i><span>Ignore groups (@g.us)</span></label>
+                <label class="toggle"><input id="cfg-ignore_unknown" type="checkbox"><i></i><span>Only reply to known numbers</span></label>
+              </div>
+            </div>
+            <div class="form-foot">
+              <button class="btn primary" onclick="saveAlisyaConfig()">Save settings</button>
+              <button class="btn ghost" onclick="loadAlisyaConfig()">Reset</button>
+              <span id="cfg-msg" class="msg"></span>
+            </div>
+          </div>
+
+          <!-- behaviour -->
+          <div id="sub-behaviour" class="subpanel card hidden">
+            <div class="card-head"><h3>Behaviour</h3><span class="hint">How Alisya talks and when she hands over.</span></div>
+            <div class="form-grid">
+              <label class="field"><span>Role</span><input id="bh-role"></label>
+              <label class="field"><span>Objective</span><input id="bh-objective"></label>
+              <label class="field"><span>Language</span><input id="bh-language"></label>
+              <label class="field"><span>Tone</span><input id="bh-tone"></label>
+              <label class="field"><span>Response length</span>
+                <select id="bh-length"><option value="short">Short</option><option value="medium">Medium</option><option value="long">Long</option></select></label>
+              <label class="field"><span>Emoji level</span>
+                <select id="bh-emoji"><option value="none">None</option><option value="light">Light</option><option value="playful">Playful</option></select></label>
+              <label class="field span-2"><span>Can answer</span><textarea id="bh-can" rows="2"></textarea></label>
+              <label class="field span-2"><span>Must not</span><textarea id="bh-must" rows="2"></textarea></label>
+              <label class="field span-2"><span>Handoff rule</span><textarea id="bh-handoff" rows="2"></textarea></label>
+              <label class="field"><span>Lead fields to collect</span><input id="bh-leads"></label>
+              <label class="field"><span>Call to action</span><input id="bh-cta"></label>
+              <div class="span-2 checks">
+                <label class="toggle"><input id="bh-follow" type="checkbox"><i></i><span>Ask a follow-up question</span></label>
+                <label class="toggle"><input id="bh-name" type="checkbox"><i></i><span>Use customer name</span></label>
+              </div>
+            </div>
+            <div class="form-foot"><button class="btn primary" onclick="saveBehaviour()">Save behaviour</button><span id="bh-msg" class="msg"></span></div>
+          </div>
+
+          <!-- knowledge -->
+          <div id="sub-knowledge" class="subpanel hidden">
+            <div class="two-col">
+              <div class="card form-card">
+                <div class="card-head"><h3>New document</h3></div>
+                <div class="form-grid one">
+                  <label class="field"><span>Title</span><input id="kn-title"></label>
+                  <label class="field"><span>Category</span><input id="kn-category" placeholder="general / fees / visa / programs"></label>
+                  <label class="field"><span>Content</span><textarea id="kn-content" rows="7"></textarea></label>
+                </div>
+                <div class="form-foot"><button class="btn primary" onclick="createKnowledge()">Add document</button><span id="kn-msg" class="msg"></span></div>
+              </div>
+              <div class="card">
+                <div class="card-head"><h3>Knowledge base</h3><input id="kn-search" class="small-input" placeholder="Filter…" oninput="filterKnowledge()"></div>
+                <div id="kn-list" class="kn-list"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- memory -->
+          <div id="sub-memory" class="subpanel card hidden">
+            <div class="card-head"><h3>Per-contact memory</h3>
+              <select id="mem-contact" onchange="loadMemory()"></select></div>
+            <div id="mem-list" class="mem-list"></div>
+            <div class="row mem-add">
+              <input id="mem-k" placeholder="field (e.g. program)"><input id="mem-v" placeholder="value">
+              <button class="btn small" onclick="saveMemoryItem()">Add field</button><span id="mem-msg" class="msg"></span>
+            </div>
+          </div>
+
+          <!-- training -->
+          <div id="sub-training" class="subpanel card hidden">
+            <div class="card-head"><h3>Training data</h3><span id="tr-tokens" class="mono hint">0 tokens</span></div>
+            <textarea id="tr-content" class="code" rows="14" oninput="updateTrainingTokens()"></textarea>
+            <div class="form-foot">
+              <label class="toggle"><input id="tr-enabled" type="checkbox"><i></i><span>Enabled</span></label>
+              <button class="btn primary" onclick="saveTraining()">Save training</button><span id="tr-msg" class="msg"></span>
+            </div>
+          </div>
+
+          <!-- model -->
+          <div id="sub-model" class="subpanel card hidden">
+            <div class="card-head"><h3>AI model slots</h3><span class="hint">Satu base URL, model berbeza per tugas.</span></div>
+            <div class="form-grid">
+              <label class="field span-2"><span>Base URL</span><input id="md-base" class="mono"></label>
+              <label class="field"><span>API key env</span><input id="md-env" class="mono"></label>
+              <label class="field"><span>Max tokens</span><input id="md-max" type="number"></label>
+              <label class="field"><span>Chat model</span><input id="md-chat" class="mono"></label>
+              <label class="field"><span>Memory model</span><input id="md-memory" class="mono"></label>
+              <label class="field"><span>Actions model</span><input id="md-actions" class="mono"></label>
+              <label class="field"><span>Playground model</span><input id="md-playground" class="mono"></label>
+              <label class="field"><span>Fallback model</span><input id="md-fallback" class="mono"></label>
+              <div class="field"><span>&nbsp;</span><label class="toggle"><input id="md-fallback-on" type="checkbox"><i></i><span>Fallback enabled</span></label></div>
+            </div>
+            <div class="form-foot">
+              <button class="btn primary" onclick="saveModel()">Save model</button>
+              <button class="btn ghost" onclick="testModel()">Test</button><span id="md-msg" class="msg"></span>
+            </div>
+          </div>
+
+          <!-- providers -->
+          <div id="sub-provider" class="subpanel hidden">
+            <div class="two-col">
+              <div class="card form-card">
+                <div class="card-head"><h3>Add provider</h3></div>
+                <div class="form-grid one">
+                  <label class="field"><span>Name</span><input id="pf-name" placeholder="Groq"></label>
+                  <label class="field"><span>Base URL</span><input id="pf-base" class="mono"></label>
+                  <label class="field"><span>API key env</span><input id="pf-env" class="mono"></label>
+                  <label class="field"><span>Model</span><input id="pf-model" class="mono"></label>
+                  <label class="field"><span>Priority</span><input id="pf-priority" type="number" value="100"></label>
+                </div>
+                <div class="form-foot"><button class="btn primary" onclick="addProvider()">Add</button></div>
+              </div>
+              <div class="card">
+                <div class="card-head"><h3>Failover chain</h3>
+                  <label class="toggle"><input id="pf-enabled" type="checkbox" onchange="saveProviderConfig()"><i></i><span>Routing enabled</span></label></div>
+                <div id="pf-list" class="pf-list"></div>
+                <div class="form-foot"><button class="btn ghost" onclick="testFailover()">Test failover</button><span id="pf-msg" class="msg"></span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- actions -->
+          <div id="sub-actions" class="subpanel card hidden">
+            <div class="card-head"><h3>CRM auto-actions</h3><span class="hint">Apa yang Alisya boleh buat sendiri dalam CRM.</span></div>
+            <div class="checks column">
+              <label class="toggle big"><input id="ac-enabled" type="checkbox"><i></i><span><b>Actions enabled</b><small>Master switch</small></span></label>
+              <label class="toggle big"><input id="ac-create" type="checkbox"><i></i><span><b>Auto-create lead</b><small>Unknown number with intent → new lead</small></span></label>
+              <label class="toggle big"><input id="ac-update" type="checkbox"><i></i><span><b>Auto-update lead</b><small>Program, engagement, stage from chat</small></span></label>
+              <label class="toggle big"><input id="ac-follow" type="checkbox"><i></i><span><b>Auto follow-up</b><small>Schedule reminders when student goes quiet</small></span></label>
+              <label class="toggle big"><input id="ac-notify" type="checkbox"><i></i><span><b>Notify team</b><small>Ping staff on hot leads / handoff</small></span></label>
+            </div>
+            <div class="form-foot"><button class="btn primary" onclick="saveActions()">Save actions</button><span id="ac-msg" class="msg"></span></div>
+          </div>
+
+          <!-- playground -->
+          <div id="sub-playground" class="subpanel card hidden">
+            <div class="card-head"><h3>Playground</h3>
+              <div class="filters compact"><input id="pg-name" placeholder="Contact name" value="Test Contact"><input id="pg-chat" placeholder="chat id" value="playground:test"></div></div>
+            <div id="pg-chatbox" class="thread playground"></div>
+            <div class="composer">
+              <textarea id="pg-input" rows="1" placeholder="Tanya Alisya…" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendPlayground()}"></textarea>
+              <button class="btn primary" onclick="sendPlayground()">Send</button>
+              <button class="btn ghost" onclick="clearPlayground()">Clear</button>
+            </div>
+            <p id="pg-status" class="msg"></p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PRICING ===== -->
+    <section id="tab-pricing" class="tabpanel hidden">
+      <header class="page-head">
+        <div><span class="eyebrow">Packages</span><h1>Packages for clinics</h1><p class="hint">For GP & Dental — same system, clinic-tuned. Booking, reminder, no-show follow-up.</p></div>
+      </header>
+      <div class="pricing-grid">
+        <div class="price-card">
+          <span class="price-kicker">Starter</span>
+          <div class="price-head"><b>RM599</b><span>setup</span><b class="sub">+ RM99/mo</b></div>
+          <p class="hint">Kedai / tuition · 1–2 numbers · 1 staff</p>
+          <ul>
+            <li>Patients, pipeline 5 stages, kanban 8/page, inbox, dashboard, follow-up queue</li>
+            <li>Alisya WA auto-reply · 20-exchange memory · anti-repeat</li>
+            <li><b>2 devices max</b> · 200 patients/mo (walk-in + WA)/month (Scout)</li>
+            <li>Subdomain <span class="mono">klinikanda.care</span> · weekly backup</li>
+            <li>WA support · 48h fix</li>
+          </ul>
+          <button class="btn primary block" onclick="contactPricing('Starter')">Choose Starter</button>
+        </div>
+        <div class="price-card featured">
+          <span class="price-badge">Most chosen</span>
+          <span class="price-kicker">Pro</span>
+          <div class="price-head"><b>RM999</b><span>setup</span><b class="sub">+ RM199/mo</b></div>
+          <p class="hint">Tuition besar · 3–5 numbers · 3 staff</p>
+          <ul>
+            <li>Everything in Starter + priority views</li>
+            <li><b>5 devices max</b> · 500 patients/mo/month</li>
+            <li>Custom <span class="mono">crm.klinikanda.care</span> · daily backup</li>
+            <li>WA support · 24h priority</li>
+          </ul>
+          <button class="btn primary block" onclick="contactPricing('Pro')">Choose Pro</button>
+        </div>
+        <div class="price-card">
+          <span class="price-kicker">Self-Host</span>
+          <div class="price-head"><b>RM2,500</b><span>one-time</span><b class="sub">+ RM0/mo</b></div>
+          <p class="hint">Your VPS · your domain · you host</p>
+          <ul>
+            <li>Source code + training 2h</li>
+            <li>5 devices (configurable) · unlimited Scout (your run)</li>
+            <li>30-day onboarding only · you manage updates</li>
+          </ul>
+          <button class="btn ghost block" onclick="contactPricing('Self-Host')">Get source</button>
+        </div>
+      </div>
+      <div class="card" style="margin-top:18px">
+        <div class="card-head"><h3>Why one-time + monthly?</h3></div>
+        <p class="hint">Setup = migration + training. Monthly = VPS, security patches, Scout leads, updates. Without monthly we'd charge RM2k+ upfront and leave you alone — hybrid is cheaper and you stay updated.</p>
+        <div class="card-head" style="margin-top:14px"><h3>Device limit?</h3></div>
+        <p class="hint"><b>MAX 5 devices</b> — single WAHA <span class="mono">noweb-arm :3000</span>, 1 QR per session (slug <span class="mono">^[a-z0-9_-]{1,20}$</span>). Starter cap 2, Pro cap 5 — enough for sales + admin + owner. Need 10? We can raise on Pro.</p>
+        <div class="card-head" style="margin-top:14px"><h3>WhatsApp — official API or not?</h3></div>
+        <p class="hint">We use <b>WAHA WhatsApp Web automation</b> (scan QR, mirrors whatsapp.com) — <b>NOT the Official WhatsApp Business API</b>. Why: no per-conversation fee (official = RM0.15–0.30/24h), setup 10 min. Risk: WhatsApp can temp-block spam (>30 new chats/hour). We mitigate: warm-up ≤10/day (3 days), queue with retry, backup 2 numbers, anti-dupe 85%. Need green-tick? We migrate to Official API later — extra Meta/BSP fees apply.</p>
+        <p style="margin-top:10px"><a href="https://github.com/gb99xbear/campusbridge-crm-demo/blob/main/TERMS.md" target="_blank" rel="noopener">Read full TERMS & disclosure →</a> · <a href="https://github.com/gb99xbear/campusbridge-crm-demo/blob/main/PRICING.md" target="_blank" rel="noopener">PRICING.md →</a></p>
+      </div>
+    </section>
+
+    <!-- ===== DEVICES ===== -->
+    <section id="tab-devices" class="tabpanel hidden">
+      <header class="page-head">
+        <div><span class="eyebrow">Alisya</span><h1>WhatsApp devices</h1></div>
+        <div class="page-actions"><button class="btn ghost" onclick="listDevices()">↻ Refresh</button></div>
+      </header>
+      <div class="devices-grid">
+        <div id="device-list" class="device-list"></div>
+        <div class="device-side">
+          <div class="card form-card">
+            <div class="card-head"><h3>＋ Add device</h3></div>
+            <p class="hint">Add 2+ numbers via QR — each device pairs separately.</p>
+            <div class="form-grid one">
+              <label class="field"><span>Session slug</span><input id="dv-session" class="mono" placeholder="cb-jakarta"></label>
+              <label class="field"><span>Display name</span><input id="dv-name" placeholder="Alisya Jakarta"></label>
+            </div>
+            <div class="form-foot"><button class="btn primary" onclick="createDevice()">Create & show QR</button></div>
+          </div>
+          <div class="card qr-card">
+            <div class="card-head"><h3>Pairing QR</h3><span id="dv-qr-for" class="hint"></span></div>
+            <div id="dv-qr" class="qr-box"><p class="hint">Pilih device → Show QR</p></div>
+            <p id="dv-msg" class="msg"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ============ DRAWER ============ -->
+<div id="drawer-backdrop" class="backdrop hidden" onclick="closeDrawer()"></div>
+<aside id="drawer" class="drawer hidden" role="dialog" aria-modal="true">
+  <div id="drawer-content"></div>
+</aside>
+
+<div id="toast" class="toast"></div>
+
+<script src="mock.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
